@@ -18,7 +18,7 @@ jobs:
           sudo apt-get install -y curl
           curl -LJO "https://gitlab-runner-downloads.s3.amazonaws.com/latest/deb/gitlab-runner_amd64.deb"
           sudo dpkg -i gitlab-runner_amd64.deb
-          sudo gitlab-runner register --non-interactive --url https://gitlab.com/ --registration-token GR13489414shPz49gvaYaf8QNHsGU --executor "shell" --description "GitHub Runner" --tag-list "github-runner"
+          sudo gitlab-runner register --non-interactive --url https://gitlab.com/ --registration-token glrt-dzj24aAXUBgy9MXgMpS7 --executor "shell" --description "GitHub Runner" --tag-list "github-runner"
 
       - name: Start GitLab Runner
         run: |
