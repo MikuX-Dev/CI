@@ -1,14 +1,11 @@
 # .cirrus.yml
 
-container:
-  image: ubuntu:latest
-
 workflows:
   main:
     jobs:
       - merge_repo:
           name: Merge Repo
-          steps:
+          tasks:
             - name: Configure Git
               command: |
                 git config user.name "MikuX-Dev"
