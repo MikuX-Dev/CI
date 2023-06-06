@@ -1,27 +1,33 @@
-workflow:
-  jobs:
-    - build:
-        name: Merge Repo
-        steps:
-          - name: Configure Git
-            command: |
-              git config user.name "MikuX-Dev"
-              git config user.email "abinishanth3464@gmail.com"
+# .cirrus.yml
 
-          - name: Clone gpt4
-            command: git clone https://github.com/xtekky/gpt4free.git
+container:
+  image: ubuntu:latest
 
-          - name: Add my repo
-            command: git remote add second-repo git@github.com:MikuX-Dev/gpt4.git
+workflows:
+  main:
+    jobs:
+      - merge_repo:
+          name: Merge Repo
+          steps:
+            - name: Configure Git
+              command: |
+                git config user.name "MikuX-Dev"
+                git config user.email "abinishanth3464@gmail.com"
 
-          - name: Fetch my repo
-            command: git fetch second-repo
+            - name: Clone gpt4
+              command: git clone https://github.com/xtekky/gpt4free.git
 
-          - name: Merge repo
-            command: git merge second-repo/main
+            - name: Add my repo
+              command: git remote add second-repo git@github.com:MikuX-Dev/gpt4.git
 
-          - name: Git push my repo
-            command: |
-              git config --global user.email "action@github.com"
-              git config --global user.name "Cirrus CI"
-              git push "https://MikuX-Dev:${{ secrets.PAT_TOKEN }}@github.com/MikuX-Dev/gpt4.git" main
+            - name: Fetch my repo
+              command: git fetch second-repo
+
+            - name: Merge repo
+              command: git merge second-repo/main
+
+            - name: Git push my repo
+              command: |
+                git config --global user.email "action@github.com"
+                git config --global user.name "Cirrus CI"
+                git push "https://MikuX-Dev:${{ secrets.PAT_TOKEN }}@github.com/MikuX-Dev/gpt4.git" main
