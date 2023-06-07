@@ -1,0 +1,30 @@
+name: Import Repo and Push
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  import_and_push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout my repo
+        uses: actions/checkout@v2
+        with:
+          repository: MikuX-Dev/kernel_xiaomi_ysl_mikasa-v2.0
+          token: ${{ secrets.PAT_TOKEN }}
+
+      - name: Configure Git
+        run: |
+          git config user.name "MikuX-Dev"
+          git config user.email "abinishanth3464@gmail.com"
+
+      - name: Import repository
+        run: |
+          git clone https://github.com/Project-Mikasa/kernel_xiaomi_ysl.git temp_repo
+          cd temp_repo
+          git checkout mikasa
+          git remote set-url upstream https://github.com/MikuX-Dev/Kernel-ysl.git
+          git push --mirror upstream/main
