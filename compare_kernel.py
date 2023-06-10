@@ -27,11 +27,11 @@ def compare_files(file1, file2):
     lines1 = open(file1, "r").readlines()
     lines2 = open(file2, "r").readlines()
     diff_lines = []
-    
+
     for i, (line1, line2) in enumerate(zip(lines1, lines2)):
         if line1 != line2:
-            diff_lines.append("Line {}: {} != {}".format(i+1, line1.strip(), line2.strip()))
-    
+            diff_lines.append("Line {}: {} != {}".format(i + 1, line1.strip(), line2.strip()))
+
     return diff_lines
 
 # Function to compare folders recursively
@@ -47,7 +47,7 @@ def compare_folders(folder1, folder2):
                     diff_files.append("File: {}\n{}".format(file1, "\n".join(diff_lines)))
             else:
                 diff_files.append("File missing: {}".format(file1))
-    
+
     return diff_files
 
 # Compare repositories
@@ -57,14 +57,8 @@ os.makedirs(clone_dir1, exist_ok=True)
 os.makedirs(clone_dir2, exist_ok=True)
 
 # Clone and extract repositories
-subprocess.run(["wget", repo_url1 + "/archive/refs/heads/" + repo_branch1 + ".zip"])
-subprocess.run(["wget", repo_url2 + "/archive/refs/heads/" + repo_branch2 + ".zip"])
-
-shutil.move(repo_branch1 + ".zip", clone_dir1)
-shutil.move(repo_branch2 + ".zip", clone_dir2)
-
-subprocess.run(["unzip", os.path.join(clone_dir1, repo_branch1 + ".zip")], cwd=clone_dir1)
-subprocess.run(["unzip", os.path.join(clone_dir2, repo_branch2 + ".zip")], cwd=clone_dir2)
+subprocess.run(["git", "clone", "--depth", "1", "--branch", repo_branch1, repo_url1, clone_dir1])
+subprocess.run(["git", "clone", "--depth", "1", "--branch", repo_branch2, repo_url2, clone_dir2])
 
 # Compare repositories and send report to Telegram bot
 diff_report = compare_folders(os.path.join(clone_dir1, repo_branch1), os.path.join(clone_dir2, repo_branch2))
@@ -74,6 +68,6 @@ if diff_report:
     report_text = "\n\n".join(diff_report)
     bot.send_message(telegram_chat_id, report_text)
 
-# Clean up temporary directories and files
+# Clean up temporary directories
 shutil.rmtree(clone_dir1)
 shutil.rmtree(clone_dir2)
