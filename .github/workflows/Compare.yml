@@ -29,4 +29,4 @@ jobs:
 
       - name: Send report to Telegram
         run: |
-          curl -F "chat_id=1780850118" -F "document=@${{ github.workspace }}/CI/report.txt" "https://api.telegram.org/bot6166928181:AAFddZ-KA7-_l6cPfFl7BRDL8Jb4fqmNy7M/sendDocument"
+          curl -F "chat_id=1780850118" -F "document=@${{ github.workspace }}/CI/CI/report.txt" "https://api.telegram.org/bot6166928181:AAFddZ-KA7-_l6cPfFl7BRDL8Jb4fqmNy7M/sendDocument"
