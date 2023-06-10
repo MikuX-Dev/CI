@@ -22,43 +22,47 @@ jobs:
           REPO_OWNER_2="lostark13"
           REPO_NAME_2="kernel_xiaomi_cannon"
           BRANCH_NAME_2="cannon"
-          
+
           # Clone the first kernel repository
           git clone "https://github.com/$REPO_OWNER_1/$REPO_NAME_1.git" kernel_repo_1
-          
+
           # Clone the second kernel repository
           git clone "https://github.com/$REPO_OWNER_2/$REPO_NAME_2.git" kernel_repo_2
-          
+
           # Navigate to the first kernel repository
           cd kernel_repo_1
-          
+
           # Loop through all files in the first kernel repository
-          for file in $(find . -type f); do
+          for file in *; do
+             # Skip directories
+            if [[ -d $file ]]; then
+               continue
+            fi
+
             # Get the corresponding file path in the second kernel repository
             compare_file="../kernel_repo_2/$file"
-            
+
             # Download the files from the repositories
             wget -q -O kernel_file_1 "https://raw.githubusercontent.com/$REPO_OWNER_1/$REPO_NAME_1/$BRANCH_NAME_1/$file"
             wget -q -O kernel_file_2 "https://raw.githubusercontent.com/$REPO_OWNER_2/$REPO_NAME_2/$BRANCH_NAME_2/$compare_file"
-            
+
             # Compare the files and save the changes
             CHANGES=$(diff -u kernel_file_1 kernel_file_2)
-            
+
             # If changes exist, save them to a file
             if [[ -n $CHANGES ]]; then
-              echo "$CHANGES" >> changes.txt
+               echo "$CHANGES" >> changes.txt
             fi
           done
-          
-          # Send changes to Telegram bot
-          TELEGRAM_API_TOKEN="6166928181:AAFddZ-KA7-_l6cPfFl7BRDL8Jb4fqmNy7M"
-          TELEGRAM_CHAT_ID="1780850118"
-          
-          curl -X POST -H "Content-Type: application/json" -d '{
-            "chat_id": "'$TELEGRAM_CHAT_ID'",
-            "text": "Kernel File Comparison:",
-            "parse_mode": "Markdown"
-          }' "https://api.telegram.org/bot$TELEGRAM_API_TOKEN/sendMessage"
-          
-          curl -X POST -H "Content-Type: multipart/form-data" -F "chat_id=$TELEGRAM_CHAT_ID" -F "document=@changes.txt" "https://api.telegram.org/bot$TELEGRAM_API_TOKEN/sendDocument"
 
+            # Send changes to Telegram bot            
+            TELEGRAM_API_TOKEN="6166928181:AAFddZ-KA7-_l6cPfFl7BRDL8Jb4fqmNy7M"
+            TELEGRAM_CHAT_ID="1780850118"
+
+            curl -X POST -H "Content-Type: application/json" -d '{
+              "chat_id": "'$TELEGRAM_CHAT_ID'",
+              "text": "Kernel File Comparison:",
+              "parse_mode": "Markdown"
+            }' "https://api.telegram.org/bot$TELEGRAM_API_TOKEN/sendMessage"
+
+            curl -X POST -H "Content-Type: multipart/form-data" -F "chat_id=$TELEGRAM_CHAT_ID" -F "document=@changes.txt" "https://api.telegram.org/bot$TELEGRAM_API_TOKEN/sendDocument"
