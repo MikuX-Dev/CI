@@ -1,5 +1,7 @@
 import os
+import shutil
 import requests
+import subprocess
 from github import Github
 import telebot
 
@@ -10,8 +12,8 @@ repo_url2 = "https://github.com/lostark13/kernel_xiaomi_cannon"
 repo_branch2 = "cannon"
 
 # Telegram bot API credentials
-telegram_bot_token = "YOUR_TELEGRAM_BOT_TOKEN"
-telegram_chat_id = "YOUR_TELEGRAM_CHAT_ID"
+telegram_bot_token = "6166928181:AAFddZ-KA7-_l6cPfFl7BRDL8Jb4fqmNy7M"
+telegram_chat_id = "1780850118"
 
 # Initialize GitHub API client
 github_token = "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"  # Optional if public repositories
@@ -28,7 +30,7 @@ def compare_files(file1, file2):
     
     for i, (line1, line2) in enumerate(zip(lines1, lines2)):
         if line1 != line2:
-            diff_lines.append(f"Line {i+1}: {line1.strip()} != {line2.strip()}")
+            diff_lines.append("Line {}: {} != {}".format(i+1, line1.strip(), line2.strip()))
     
     return diff_lines
 
@@ -42,37 +44,30 @@ def compare_folders(folder1, folder2):
             if os.path.exists(file2):
                 diff_lines = compare_files(file1, file2)
                 if diff_lines:
-                    diff_files.append(f"File: {file1}\n{'\n'.join(diff_lines)}")
+                    diff_files.append("File: {}\n{}".format(file1, "\n".join(diff_lines)))
             else:
-                diff_files.append(f"File missing: {file1}")
+                diff_files.append("File missing: {}".format(file1))
     
     return diff_files
 
-# Create temporary directories to clone repositories
+# Compare repositories
 clone_dir1 = "clone1"
 clone_dir2 = "clone2"
 os.makedirs(clone_dir1, exist_ok=True)
 os.makedirs(clone_dir2, exist_ok=True)
 
-# Clone repositories
-repo1 = g.get_repo(repo_url1)
-repo2 = g.get_repo(repo_url2)
-clone_repo1 = repo1.get_archive_link("zipball", ref=repo_branch1)
-clone_repo2 = repo2.get_archive_link("zipball", ref=repo_branch2)
+# Clone and extract repositories
+subprocess.run(["wget", repo_url1 + "/archive/refs/heads/" + repo_branch1 + ".zip"])
+subprocess.run(["wget", repo_url2 + "/archive/refs/heads/" + repo_branch2 + ".zip"])
 
-# Download and extract repositories
-response1 = requests.get(clone_repo1)
-response2 = requests.get(clone_repo2)
-with open("repo1.zip", "wb") as file1, open("repo2.zip", "wb") as file2:
-    file1.write(response1.content)
-    file2.write(response2.content)
-import zipfile
-with zipfile.ZipFile("repo1.zip", "r") as zip_ref1, zipfile.ZipFile("repo2.zip", "r") as zip_ref2:
-    zip_ref1.extractall(clone_dir1)
-    zip_ref2.extractall(clone_dir2)
+shutil.move(repo_branch1 + ".zip", clone_dir1)
+shutil.move(repo_branch2 + ".zip", clone_dir2)
+
+subprocess.run(["unzip", os.path.join(clone_dir1, repo_branch1 + ".zip")], cwd=clone_dir1)
+subprocess.run(["unzip", os.path.join(clone_dir2, repo_branch2 + ".zip")], cwd=clone_dir2)
 
 # Compare repositories and send report to Telegram bot
-diff_report = compare_folders(clone_dir1, clone_dir2)
+diff_report = compare_folders(os.path.join(clone_dir1, repo_branch1), os.path.join(clone_dir2, repo_branch2))
 
 if diff_report:
     # Send report to Telegram bot
@@ -80,7 +75,5 @@ if diff_report:
     bot.send_message(telegram_chat_id, report_text)
 
 # Clean up temporary directories and files
-os.remove("repo1.zip")
-os.remove("repo2.zip")
-os.rmdir(clone_dir1)
-os.rmdir(clone_dir2)
+shutil.rmtree(clone_dir1)
+shutil.rmtree(clone_dir2)
