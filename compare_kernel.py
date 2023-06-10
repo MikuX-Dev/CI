@@ -16,7 +16,7 @@ telegram_bot_token = "6166928181:AAFddZ-KA7-_l6cPfFl7BRDL8Jb4fqmNy7M"
 telegram_chat_id = "1780850118"
 
 # Initialize GitHub API client
-github_token = "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"  # Optional if public repositories
+github_token = "YOUR_PAT_TOKEN"  # Optional if public repositories
 g = Github(github_token)
 
 # Create Telegram bot instance
