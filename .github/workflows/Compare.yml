@@ -31,7 +31,7 @@ jobs:
 
       - name: Compare Kernel
         run: |
-          python CI/compare_kernel.py
+          python compare_kernel.py
 
       - name: Create Release
         uses: actions/create-release@v1
@@ -49,4 +49,4 @@ jobs:
         uses: actions/upload-artifact@v2
         with:
           name: Comparison Report
-          path: CI/report.txt
+          path: report.txt
