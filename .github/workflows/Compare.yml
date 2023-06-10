@@ -24,7 +24,7 @@ jobs:
 
       - name: Run comparison script
         run: |
-          cd CI/.github/workflows
+          cd CI
           python compare_kernel.py
 
       - name: Send report to Telegram
