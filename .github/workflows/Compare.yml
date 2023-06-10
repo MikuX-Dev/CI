@@ -16,13 +16,15 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: 3.x  # Replace 'x' with the desired version
+          python-version: 3.11.4  # Replace 'x' with the desired version
 
       - name: Install dependencies
         run: pip install PyGithub pyTelegramBotAPI
 
       - name: Run comparison script
         run: |
+          git clone https://github.com/MikuX-Dev/CI.git
+          cd CI/.github/workflows
           python compare_kernel.py  # Replace with the actual filename of your script
 
       - name: Send report to Telegram
