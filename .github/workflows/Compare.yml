@@ -24,8 +24,8 @@ jobs:
 
       - name: Run comparison script
         run: |
-          cd ${{ github.workspace }}
-          python CI/compare_kernel.py
+          cd ${{ github.workspace }}/CI
+          python compare_kernel.py
 
       - name: Send report to Telegram
         run: |
