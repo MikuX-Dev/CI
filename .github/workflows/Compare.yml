@@ -1,4 +1,4 @@
-name: Compare Kernel
+name: Push to Release
 
 on:
   push:
@@ -6,13 +6,13 @@ on:
       - main  # Adjust the branch name if needed
 
 jobs:
-  compare_kernel:
+  push_to_release:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
-        
+
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
@@ -21,14 +21,28 @@ jobs:
       - name: Install dependencies
         run: pip install PyGithub pyTelegramBotAPI
 
-      - name: Clone repository
-        run: git clone https://github.com/MikuX-Dev/CI.git
-
       - name: Run comparison script
-        run: |
-          cd CI
-          python compare_kernel.py
+        run: python CI/compare_kernel.py
 
-      - name: Send report to Telegram
-        run: |
-          curl -F "chat_id=1780850118" -F "document=@${{ github.workspace }}/CI/report.txt" "https://api.telegram.org/bot6166928181:AAFddZ-KA7-_l6cPfFl7BRDL8Jb4fqmNy7M/sendDocument"
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}  # Use your PAT secret name here
+        with:
+          tag_name: ${{ github.sha }}
+          release_name: Release ${{ github.sha }}
+          body: |
+            This is an automated release triggered by the CI workflow.
+          draft: false
+          prerelease: false
+
+      - name: Upload File to Release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}  # Use your PAT secret name here
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: CI/report.txt
+          asset_name: report.txt
+          asset_content_type: text/plain
