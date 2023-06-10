@@ -10,10 +10,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
-        with:
-          repository: MikuX-Dev/CI
-
+      - name: Checkout repository
+        uses: actions/checkout@v2
+        
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
@@ -22,9 +21,12 @@ jobs:
       - name: Install dependencies
         run: pip install PyGithub pyTelegramBotAPI
 
+      - name: Clone repository
+        run: git clone https://github.com/MikuX-Dev/CI.git
+
       - name: Run comparison script
         run: |
-          cd ${{ github.workspace }}/CI
+          cd CI
           python compare_kernel.py
 
       - name: Send report to Telegram
