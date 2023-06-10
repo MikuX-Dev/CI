@@ -3,7 +3,7 @@ name: Compare Kernel
 on:
   push:
     branches:
-      - main  # Adjust the branch name if needed
+      - main
 
 jobs:
   compare_kernel:
@@ -13,12 +13,18 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v2
         with:
-          token: ${{ secrets.PAT_TOKEN }}
+          repository: MikuX-Dev/CI
+          ssh-strict: true
+          persist-credentials: false
+          clean: true
+          fetch-depth: 1
+          lfs: false
+          submodules: false
 
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: 3.11.4  # Replace 'x' with the desired version
+          python-version: 3.11.4
 
       - name: Install dependencies
         run: pip install PyGithub pyTelegramBotAPI
@@ -32,8 +38,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.PAT_TOKEN }}
         with:
-          tag_name: v1.0.0  # Replace with the desired tag name
-          release_name: Release v1.0.0  # Replace with the desired release name
+          tag_name: v1.0.0
+          release_name: Release v1.0.0
           draft: false
           prerelease: false
           body: |
