@@ -23,9 +23,8 @@ jobs:
 
       - name: Run comparison script
         run: |
-          git clone https://github.com/MikuX-Dev/CI.git
           cd CI/.github/workflows
-          python compare_kernel.py  # Replace with the actual filename of your script
+          python compare_kernel.py
 
       - name: Send report to Telegram
         run: |
