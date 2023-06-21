@@ -24,8 +24,8 @@ jobs:
 
       - name: Install Git LFS
         run: |
-          sudo apt-get install git-lfs unzip -y
-          
+          sudo apt-get install git-lfs -y
+          git lfs install
 
       - name: Download GitHub repositories
         run: |
@@ -42,47 +42,47 @@ jobs:
       - name: Push mikasa branch to GitLab
         run: |
           cd kernel_xiaomi_ysl-mikasa/
-          git config --global user.email "abinishanth3464@gmail.com"
-          git config --global user.name "MikuX-Dev"
+          git config user.email "abinishanth3464@gmail.com"
+          git config user.name "MikuX-Dev"
           git init
-          git checkout -b mikasa
-          git remote add origin git@gitlab.com:bb-botos/local-manifest/kernel-xiaomi-ysl.git
-          git lfs install
+          git lfs install --local
           git lfs track "*.c"
           git lfs track "*.h"
           git config lfs.https://gitlab.com/bb-botos/local-manifest/kernel-xiaomi-ysl.git/info/lfs.locksverify true
+          git add .gitattributes
           git add .
-          git commit -m "Add mikasa branch"
-          git push origin mikasa
+          git commit -m "Add .gitattributes and mikasa branch"
+          git remote add origin git@gitlab.com:bb-botos/local-manifest/kernel-xiaomi-ysl.git
+          git push --set-upstream origin mikasa
 
       - name: Push logan-perf branch to GitLab
         run: |
           cd Logan_Ysl-perf/
-          git config --global user.email "abinishanth3464@gmail.com"
-          git config --global user.name "MikuX-Dev"
+          git config user.email "abinishanth3464@gmail.com"
+          git config user.name "MikuX-Dev"
           git init
-          git checkout -b logan-perf
-          git remote add origin git@gitlab.com:bb-botos/local-manifest/kernel-xiaomi-ysl.git
-          git lfs install
+          git lfs install --local
           git lfs track "*.c"
           git lfs track "*.h"
           git config lfs.https://gitlab.com/bb-botos/local-manifest/kernel-xiaomi-ysl.git/info/lfs.locksverify true
+          git add .gitattributes
           git add .
-          git commit -m "Add logan-perf branch"
-          git push origin logan-perf
+          git commit -m "Add .gitattributes and logan-perf branch"
+          git remote add origin git@gitlab.com:bb-botos/local-manifest/kernel-xiaomi-ysl.git
+          git push --set-upstream origin logan-perf
 
       - name: Push logan-common branch to GitLab
         run: |
           cd Logan_Ysl-common/
-          git config --global user.email "abinishanth3464@gmail.com"
-          git config --global user.name "MikuX-Dev"
+          git config user.email "abinishanth3464@gmail.com"
+          git config user.name "MikuX-Dev"
           git init
-          git checkout -b logan-common
-          git remote add origin git@gitlab.com:bb-botos/local-manifest/kernel-xiaomi-ysl.git
-          git lfs install
+          git lfs install --local
           git lfs track "*.c"
           git lfs track "*.h"
           git config lfs.https://gitlab.com/bb-botos/local-manifest/kernel-xiaomi-ysl.git/info/lfs.locksverify true
+          git add .gitattributes
           git add .
-          git commit -m "Add logan-common branch"
-          git push origin logan-common
+          git commit -m "Add .gitattributes and logan-common branch"
+          git remote add origin git@gitlab.com:bb-botos/local-manifest/kernel-xiaomi-ysl.git
+          git push --set-upstream origin logan-common
