@@ -49,11 +49,11 @@ jobs:
           git lfs track "*.c"
           git lfs track "*.h"
           git config lfs.https://gitlab.com/bb-botos/local-manifest/kernel-xiaomi-ysl.git/info/lfs.locksverify true
-          git add .gitattributes
+          git add -f .gitattributes
           git add .
           git commit -m "Add .gitattributes and mikasa branch"
           git remote add origin git@gitlab.com:bb-botos/local-manifest/kernel-xiaomi-ysl.git
-          git push --set-upstream origin mikasa
+          git push origin mikasa
 
       - name: Push logan-perf branch to GitLab
         run: |
@@ -65,11 +65,11 @@ jobs:
           git lfs track "*.c"
           git lfs track "*.h"
           git config lfs.https://gitlab.com/bb-botos/local-manifest/kernel-xiaomi-ysl.git/info/lfs.locksverify true
-          git add .gitattributes
+          git add -f .gitattributes
           git add .
           git commit -m "Add .gitattributes and logan-perf branch"
           git remote add origin git@gitlab.com:bb-botos/local-manifest/kernel-xiaomi-ysl.git
-          git push --set-upstream origin logan-perf
+          git push origin logan-perf
 
       - name: Push logan-common branch to GitLab
         run: |
@@ -81,8 +81,8 @@ jobs:
           git lfs track "*.c"
           git lfs track "*.h"
           git config lfs.https://gitlab.com/bb-botos/local-manifest/kernel-xiaomi-ysl.git/info/lfs.locksverify true
-          git add .gitattributes
+          git add -f .gitattributes
           git add .
           git commit -m "Add .gitattributes and logan-common branch"
           git remote add origin git@gitlab.com:bb-botos/local-manifest/kernel-xiaomi-ysl.git
-          git push --set-upstream origin logan-common
+          git push origin logan-common
