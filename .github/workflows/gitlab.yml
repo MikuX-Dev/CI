@@ -34,9 +34,9 @@ jobs:
 
       - name: Unzip repositories
         run: |
-          unzip mikasa.zip -d kernel_xiaomi_ysl-mikasa
-          unzip logon-ysl-common.zip -d Logan_Ysl-common
-          unzip logon-ysl-perf.zip -d Logan_Ysl-perf
+          unzip mikasa.zip 
+          unzip logon-ysl-common.zip 
+          unzip logon-ysl-perf.zip 
 
       - name: Push mikasa branch to GitLab
         run: |
