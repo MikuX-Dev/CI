@@ -3,7 +3,7 @@ name: GitHub to GitLab
 on:
   push:
     branches:
-      - mikasa
+      - main
 
 jobs:
   build:
