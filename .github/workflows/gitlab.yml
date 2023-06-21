@@ -15,10 +15,12 @@ jobs:
 
       - name: Configure SSH
         run: |
-          mkdir -p ~/.ssh/
+          mkdir ~/.ssh/
           echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          echo "${{ secrets.SSH_PRIVATE_KEY_PUB }}" > ~/.ssh/id_rsa.pub
           chmod 600 ~/.ssh/id_rsa
-          echo "${{ secrets.KNOWN_HOSTS }}" > ~/.ssh/known_hosts
+          chmod 600 ~/.ssh/id_rsa.pub
+          ssh-keyscan gitlab.com >> ~/.ssh/known_hosts
 
       - name: Install unzip
         run: sudo apt-get install unzip -y
