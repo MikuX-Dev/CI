@@ -1,4 +1,4 @@
-name: GitHub CI with GitLab SSH
+name: GitHub to GitLab 
 
 on:
   push:
@@ -28,6 +28,11 @@ jobs:
           curl -L -o mikasa.zip https://github.com/Project-Mikasa/kernel_xiaomi_ysl/archive/refs/heads/mikasa.zip
           curl -L -o logon-ysl-common.zip https://github.com/Noob-214/Logan_Ysl/archive/refs/heads/common.zip
           curl -L -o logon-ysl-perf.zip https://github.com/Noob-214/Logan_Ysl/archive/refs/heads/perf.zip
+
+      - name: Configure Git user
+        run: |
+          git config user.email "abinishanth3464@gmail.com"  # Replace with your email
+          git config user.name "MikuX-Dev"  # Replace with your name
 
       - name: Unzip repositories
         run: |
