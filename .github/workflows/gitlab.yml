@@ -52,4 +52,4 @@ jobs:
           git add .
           git commit -m "Add .gitattributes and mikasa branch"
           git remote add origin git@gitlab.com:bb-botos/local-manifest/kernel-xiaomi-ysl.git
-          git push --set-upstream origin mikasa
+          git push origin mikasa
