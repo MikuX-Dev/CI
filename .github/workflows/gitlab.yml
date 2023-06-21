@@ -52,6 +52,7 @@ jobs:
           git add -f .gitattributes
           git add .
           git commit -m "Add .gitattributes and mikasa branch"
+          git branch -m master mikasa
           git remote add origin git@gitlab.com:bb-botos/local-manifest/kernel-xiaomi-ysl.git
           git push origin mikasa
 
@@ -68,6 +69,7 @@ jobs:
           git add -f .gitattributes
           git add .
           git commit -m "Add .gitattributes and logan-perf branch"
+          git branch -m master logan-perf
           git remote add origin git@gitlab.com:bb-botos/local-manifest/kernel-xiaomi-ysl.git
           git push origin logan-perf
 
@@ -84,5 +86,6 @@ jobs:
           git add -f .gitattributes
           git add .
           git commit -m "Add .gitattributes and logan-common branch"
+          git branch -m master logan-common
           git remote add origin git@gitlab.com:bb-botos/local-manifest/kernel-xiaomi-ysl.git
           git push origin logan-common
