@@ -56,7 +56,7 @@ jobs:
 
       - name: Push logan-perf branch to GitLab
         run: |
-          cd ../Logan_Ysl-perf/
+          cd Logan_Ysl-perf/
           git config --global user.email "abinishanth3464@gmail.com"
           git config --global user.name "MikuX-Dev"
           git init
@@ -71,7 +71,7 @@ jobs:
 
       - name: Push logan-common branch to GitLab
         run: |
-          cd ../Logan_Ysl-common/
+          cd Logan_Ysl-common/
           git config --global user.email "abinishanth3464@gmail.com"
           git config --global user.name "MikuX-Dev"
           git init
