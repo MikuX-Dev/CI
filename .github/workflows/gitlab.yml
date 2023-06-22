@@ -48,7 +48,7 @@ jobs:
           git lfs install          
           git lfs track "*.c"
           git lfs track "*.h"
-          git add .gitattributes
+          git add -f .gitattributes
           git add .
           git commit -m "Add .gitattributes and mikasa branch"
           git push origin mikasa
