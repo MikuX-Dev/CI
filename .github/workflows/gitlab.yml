@@ -45,9 +45,9 @@ jobs:
           git config user.name "MikuX-Dev"
           git remote add origin git@gitlab.com:bb-botos/local-manifest/kernel-xiaomi-ysl.git
           git checkout -b mikasa
-          git lfs install          
-          git lfs track "*.c"
-          git lfs track "*.h"
+          #git config lfs.https://gitlab.com/bb-botos/local-manifest/kernel-xiaomi-ysl.git/info/lfs.locksverify true
+          curl https://raw.githubusercontent.com/Noob-214/Logan_Ysl/common/.gitattributes > .gitattributes
+          git lfs install
           git add -f .gitattributes
           git add .
           git commit -m "Add .gitattributes and mikasa branch"
