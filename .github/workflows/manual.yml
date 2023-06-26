@@ -1,0 +1,44 @@
+name: Sync Fork with Upstream
+on:
+  schedule:
+    - cron: "0 0 * * *"
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+
+      - name: Set up Git user
+        run: |
+          git config --global user.name "MikuX-Dev"
+          git config --global user.email "abinishanth3464@gmail.com"
+          
+      - name: Configure SSH
+        run: |
+          mkdir ~/.ssh/          
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          echo "${{ secrets.SSH_PRIVATE_KEY_PUB }}" > ~/.ssh/id_rsa.pub
+          chmod 600 ~/.ssh/id_rsa               
+          chmod 600 ~/.ssh/id_rsa.pub
+          ssh-keyscan gitlab.com >> ~/.ssh/known_hosts
+          
+      - name: Clone forked repository
+        run: |
+          git clone git@github.com:MikuX-Dev/Open-Assistant.git
+          cd Open-Assistant
+
+      - name: Add upstream remote
+        run: |
+          cd Open-Assistant
+          git remote add upstream https://github.com/LAION-AI/Open-Assistant.git
+          git fetch upstream
+
+      - name: Sync fork with upstream
+        run: |
+          cd Open-Assistant
+          git checkout main
+          git merge upstream/main
+          git push origin main
