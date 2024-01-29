@@ -1,41 +1,23 @@
-name: Build kali iso
+name: upload
 
 on:  
   push:    
     branches:     
-      - bruh
+      - main
       
 jobs:      
   build:         
     runs-on: ubuntu-latest
-    container:
-      image:  kalilinux/kali-last-release:amd64
 
     steps:  
       - name: Checkout repository 
-        uses: actions/checkout@v3
-        
-        
-      - name: Configure SSH
-        run: |
-          mkdir ~/.ssh/          
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-          echo "${{ secrets.SSH_PRIVATE_KEY_PUB }}" > ~/.ssh/id_rsa.pub
-          chmod 600 ~/.ssh/id_rsa               
-          chmod 600 ~/.ssh/id_rsa.pub
-          ssh-keyscan github.com >> ~/.ssh/known_hosts
+        uses: actions/checkout@v4
           
-      - name: Build Kali ISO
+      - name: upload
         run: |
-          # Add your build commands here
-          # Example: ./build_script.sh
-          # Make sure your build script creates the ISO in the repository root
-          ./build.sh --verbose --arch amd64 --installer
-
-      - name: Upload to GitHub Releases
-        uses: actions/upload-release-asset@v1
-        with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          upload_url: ${{ github.event.release.upload_url }}
-          asset_path: ./images/*.iso
-          asset_name: custom_kali.iso
+          mkdir iso
+          cd iso
+          wget https://cdimage.kali.org/kali-2023.4/kali-linux-2023.4-installer-purple-amd64.iso
+          wget https://cdimage.kali.org/kali-2023.4/kali-linux-2023.4-installer-amd64.iso
+          wget https://in-mirror.garudalinux.org/archlinux/iso/2024.01.01/archlinux-2024.01.01-x86_64.iso
+          curl -p -T *.iso ftp://homeftp:123456789@10.27.27.1/usb1_1/isos/
